@@ -123,15 +123,15 @@ def testPolarVector():
 	>>> v.draw(p)
 	'! point 1,2, vector r:5 a:6'
 	>>> p2=v.move(p)
-	>>> print(p2)
-	5.972609476841367,2.5226423163382674
+	>>> print(p2) # doctest:+ELLIPSIS
+	5.97260947684...,2.5226423163...
 	"""
 def testEdge():
 	"""
 	>>> e=Edge(1,2)
 	>>> p=Point(3,4)
-	>>> e.draw(p)
-	'_line 3,4 3.999390827019096,4.034899496702501'
+	>>> e.draw(p) # doctest:+ELLIPSIS
+	'_line 3,4 3.9993908270...,4.0348994967...'
 	"""
 def testNotch():
 	"""
