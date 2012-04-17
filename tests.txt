@@ -1,0 +1,70 @@
+These are the tests for PolarVectorCAD functionality.
+
+First, import all the classes:
+
+	>>> from PolarVectorCAD import *
+
+Then, run all the tests:
+
+Point Class
+
+	>>> p=Point(1,2)
+	>>> print(p)
+	1,2
+	>>> q=Point(3,4)
+	>>> print(p+q)
+	4,6
+	>>> r=Point(3.3,4.4)
+	>>> print(p+r)
+	4.3,6.4
+	>>> v=Point(1,2,3)
+	>>> print(v)
+	1,2,3
+	>>> w=Point(4,5,6)
+	>>> print(w)
+	4,5,6
+	>>> print(v+w)
+	5,7,9
+
+PolarVector Class
+
+	>>> v=PolarVector(5,6)
+	>>> print(v)
+	r:5 a:6
+	>>> p=Point(1,2)
+	>>> v.draw(p)
+	'! point 1,2, vector r:5 a:6'
+	>>> p2=v.move(p)
+	>>> print(p2) # doctest:+ELLIPSIS
+	5.97260947684...,2.5226423163...
+
+Edge Class
+
+	>>> e=Edge(1,2)
+	>>> p=Point(3,4)
+	>>> e.draw(p) # doctest:+ELLIPSIS
+	'_line 3,4 3.9993908270...,4.0348994967...'
+
+Notch Class
+
+	>>> n=Notch(1,2,3)
+	>>> print(n)
+	r:1 a:2 c:3
+
+SmoothNotch Class
+
+	>>> s=SmoothNotch(1,2,3,4)
+	>>> print(s)
+	r:1 a:2 c:3 s:4
+
+Bezier Class
+
+	>>> p1=Point(1,2)
+	>>> p2=Point(3,4)
+	>>> p3=Point(5,6)
+	>>> b=Bezier(p1,p2,p3)
+	>>> b.draw()
+	'_curve 1,2 3,4 5,6 _enter'
+
+
+

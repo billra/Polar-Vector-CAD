@@ -69,6 +69,20 @@ class SmoothNotch(Notch):
 
 def main():
 
+	#- 14 LE bridle points, 2 TE bridle points (in same bridle) -> 13 LE segments: 1 center, 6 per side
+	#- stack 7 segments (array command)
+	#- clip off at an angle to create shorter segments toward tips, length range: [16-10] lr
+	#- choose a segment incidence angle to create LE curve: [5°] ia
+	#- rotate segments into their final angle: grab 6, rotate by ia, grab 5 rotate, etc.
+	#- choose a notch wall length: [8] nw
+	#- choose a notch angle: [8°] na (greater or equal to segment incidence angle ia)
+	#- make 7 notches total (array command) 
+	#- scale notches so smaller toward end, range: [100%-70%] -> 100, 95, 90, 85, 80, 75, 70% sn
+	#- choose mid and tip notch rotation angle: [8°,74°] sr, er (should follow tension vector from bridle point, see wrinkle in canopy)
+	#- rotate all notches by sr (11°)
+	#(74-8)/6=11 nr,  so rotate each notch an additional 10° using the same segment grab and rotate procedure
+	#choose a tip width, tw, probably less than last segment length: [8]
+
 	v=[]
 	v.append(Edge(1,2))
 	v.append(Notch(1,2,3))
@@ -94,70 +108,14 @@ def main():
 #		a=8+i*11 # angle [8,19,...,74]
 #	notchVec.append(Notch(r,a))
 
-def testPoint():
-	"""
-	>>> p=Point(1,2)
-	>>> print(p)
-	1,2
-	>>> q=Point(3,4)
-	>>> print(p+q)
-	4,6
-	>>> r=Point(3.3,4.4)
-	>>> print(p+r)
-	4.3,6.4
-	>>> v=Point(1,2,3)
-	>>> print(v)
-	1,2,3
-	>>> w=Point(4,5,6)
-	>>> print(w)
-	4,5,6
-	>>> print(v+w)
-	5,7,9
-	"""
-def testPolarVector():
-	"""
-	>>> v=PolarVector(5,6)
-	>>> print(v)
-	r:5 a:6
-	>>> p=Point(1,2)
-	>>> v.draw(p)
-	'! point 1,2, vector r:5 a:6'
-	>>> p2=v.move(p)
-	>>> print(p2) # doctest:+ELLIPSIS
-	5.97260947684...,2.5226423163...
-	"""
-def testEdge():
-	"""
-	>>> e=Edge(1,2)
-	>>> p=Point(3,4)
-	>>> e.draw(p) # doctest:+ELLIPSIS
-	'_line 3,4 3.9993908270...,4.0348994967...'
-	"""
-def testNotch():
-	"""
-	>>> n=Notch(1,2,3)
-	>>> print(n)
-	r:1 a:2 c:3
-	"""
-def testSmoothNotch():
-	"""
-	>>> s=SmoothNotch(1,2,3,4)
-	>>> print(s)
-	r:1 a:2 c:3 s:4
-	"""
-def testBezier():
-	"""
-	>>> p1=Point(1,2)
-	>>> p2=Point(3,4)
-	>>> p3=Point(5,6)
-	>>> b=Bezier(p1,p2,p3)
-	>>> b.draw()
-	'_curve 1,2 3,4 5,6 _enter'
-	"""
+
+
+
+
 
 if __name__ == "__main__":
 	main()
 	import doctest
-	doctest.testmod()
+	doctest.testfile('tests.txt')
 
 
