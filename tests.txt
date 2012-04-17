@@ -66,5 +66,10 @@ Bezier Class
 	>>> b.draw()
 	'_curve 1,2 3,4 5,6 _enter'
 
+Regression tests: add tests here to ensure future updates maintain compatibility with existing usage.
+
+sless 1c
+
+	todo
 
 

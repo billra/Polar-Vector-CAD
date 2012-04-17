@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# polar vector CAD library, Bill Ola Rasmussen
+# Polar Vector CAD library, Bill Ola Rasmussen
 
 from math import sin, cos, radians
 
@@ -69,32 +69,13 @@ class SmoothNotch(Notch):
 
 def main():
 
-	#- 14 LE bridle points, 2 TE bridle points (in same bridle) -> 13 LE segments: 1 center, 6 per side
-	#- stack 7 segments (array command)
-	#- clip off at an angle to create shorter segments toward tips, length range: [16-10] lr
-	#- choose a segment incidence angle to create LE curve: [5°] ia
-	#- rotate segments into their final angle: grab 6, rotate by ia, grab 5 rotate, etc.
-	#- choose a notch wall length: [8] nw
-	#- choose a notch angle: [8°] na (greater or equal to segment incidence angle ia)
-	#- make 7 notches total (array command) 
-	#- scale notches so smaller toward end, range: [100%-70%] -> 100, 95, 90, 85, 80, 75, 70% sn
-	#- choose mid and tip notch rotation angle: [8°,74°] sr, er (should follow tension vector from bridle point, see wrinkle in canopy)
-	#- rotate all notches by sr (11°)
-	#(74-8)/6=11 nr,  so rotate each notch an additional 10° using the same segment grab and rotate procedure
-	#choose a tip width, tw, probably less than last segment length: [8]
+	# sless 1c reference design
 
-	v=[]
-	v.append(Edge(1,2))
-	v.append(Notch(1,2,3))
-	v.append(SmoothNotch(1,2,3,4))
-	for i in v:
-		print('element ', i)
-
-	e=Edge(1,2)
-	print('edge',e)
-
-	n=Notch(1,2,3)
-	print('Notch',n)
+	# 14 LE bridle points, 2 TE bridle points (in same bridle) -> 13 LE segments: 1 center, 6 per side
+	# stack 7 segments (array command)
+	# clip off at an angle to create shorter segments toward tips, length range: [16-10] lr
+	# choose a segment incidence angle to create LE curve: [5°] ia
+	# rotate segments into their final angle: grab 6, rotate by ia, grab 5 rotate, etc.
 
 	edgeVec=[]
 	for i in range(7):
@@ -102,15 +83,21 @@ def main():
 		a=i*5 # angle [0,5,...,30]
 	edgeVec.append(Edge(r,a))
 
-#	notchVec=[]
-#	for i in range(7):
-#		r=8*(1-i*.05) # % of length 8 [100,95,...,70]
-#		a=8+i*11 # angle [8,19,...,74]
-#	notchVec.append(Notch(r,a))
+	# choose a notch wall length: [8] nw
+	# choose a notch angle: [8°] na (greater or equal to segment incidence angle ia)
+	# make 7 notches total (array command) 
+	# scale notches so smaller toward end, range: [100%-70%] -> 100, 95, 90, 85, 80, 75, 70% sn
+	# choose mid and tip notch rotation angle: [8°,74°] sr, er 
+	#   (should follow tension vector from bridle point, see wrinkle in canopy)
+	# (74-8)/6=11 nr, so rotate each notch 11° using the same segment grab and rotate strategy
 
+	notchVec=[]
+	for i in range(7):
+		r=8*(1-i*.05) # % of length 8 [100,95,...,70]
+		a=8+i*11 # angle [8,19,...,74]
+	notchVec.append(Notch(r,a,8))
 
-
-
+	# choose a tip width, tw, probably less than last segment length: [8]
 
 
 if __name__ == "__main__":

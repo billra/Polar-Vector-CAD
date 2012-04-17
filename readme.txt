@@ -6,7 +6,7 @@ See http://en.wikipedia.org/wiki/Vector_notation#Polar_vectors
 ------
 Vision:
 ------
-The goal of this library is to emulate a manual design process. Doing the following programatically instead of manually enables parametric design.
+The goal of this library is to emulate a manual design process. Doing the process programatically instead of manually enables parametric design.
 
 The key decision for this library is the correct choice of abstraction. Basing all items on Polar Vectors allows great design freedom and concise implementation code.
 
@@ -21,5 +21,8 @@ with existing usage.
 ----
 Todo:
 ----
-- “inversion of control” later on to abstract CAD program when 2nd CAD target is made
+- notch draw
+- sless 1c regression test
+- “inversion of control” later on to abstract CAD program when need arises to target a 2nd CAD package
+
 
