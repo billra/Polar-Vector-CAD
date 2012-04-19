@@ -13,7 +13,11 @@ class Point(object):
 	def __str__(self):
 		return ','.join(map(str,self.f))
 	def __add__(self,rhs):
-		return Point( *map(sum,zip(self.f,rhs.f)) ) # todo: try same code as interleave
+		return Point( *map(sum,zip(self.f,rhs.f)) ) # todo: delete
+	def move(self,*m):
+		'move a point by a list of numbers'
+		self.f=[x+y for x,y in zip(self.f,m)] # todo doctest
+		return self
 	# todo: draw function
 
 class Bezier(object):
@@ -37,13 +41,13 @@ class PolarVector(object):
 	def draw(self,p):
 		'draw vector in cartesian space starting from point p'
 		return '! point '+str(p)+', vector r:'+str(self.r)+' a:'+str(self.a) # output a comment
-	def move(self,p): #implies that move moves point, should be in point
+	def move(self,p):
 		'point + vector -> point'
-		return p+Point(self.r*cos(radians(self.a)),self.r*sin(radians(self.a)))
+		return p.move(self.r*cos(radians(self.a)),self.r*sin(radians(self.a)))
 	def reflect(self,a):
 		'reflect vector across angle'
 		self.a=2*a-self.a
-		return self # todo: doctest
+		return self # todo: fix and doctest
 
 class Edge(PolarVector):
 	def draw(self,p):
@@ -61,8 +65,8 @@ class Notch(PolarVector):
 	def draw(self,p):
 		'draw notch in cartesian space, evaluates to two Edges'
 		e1=Edge(self.r,self.a+90-self.c/2.)
-		e2=Edge(self.r,self.a-90-self.c/2.)
-		return e1.draw(p)+'\n'+e2.draw(e1.move(p)) # todo: doctest
+		e2=Edge(self.r,self.a-90+self.c/2.)
+		return e1.draw(p)+'\n'+e2.draw(p) # todo: doctest
 
 class SmoothNotch(Notch):
 	'notch with smooth transition'
@@ -109,7 +113,7 @@ def main():
 	vecs=list(sum(zip(edgeVec,notchVec),())) # or we could have coded the above two as one loop
 
 	# choose a tip width, tw, probably less than last segment length: [8]
-	vecs.append(Edge(8,270)) # tip: length 8, pointing down
+	vecs.append(Edge(8,90)) # tip: length 8, pointing down
 
 	# use a reflection of the LE tip notch for the TE tip notch
 	vecs.append(deepcopy(vecs[-2]).reflect(0))
@@ -117,9 +121,9 @@ def main():
 	for i in vecs:
 		print(i)
 
-	#for i in vecs:
-	#	print(i.draw)
-	# next todo: update the p which is passed in when drawing
+	p=Point(0,0)
+	for i in vecs:
+		print(i.draw(p))
 
 if __name__ == "__main__":
 	main()
