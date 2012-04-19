@@ -2,6 +2,7 @@
 # Polar Vector CAD library, Bill Ola Rasmussen
 
 from math import sin, cos, radians
+from copy import deepcopy
 
 # ---- Cartesian Space ----
 
@@ -12,7 +13,7 @@ class Point(object):
 	def __str__(self):
 		return ','.join(map(str,self.f))
 	def __add__(self,rhs):
-		return Point( *map(sum,zip(self.f,rhs.f)) )
+		return Point( *map(sum,zip(self.f,rhs.f)) ) # todo: try same code as interleave
 	# todo: draw function
 
 class Bezier(object):
@@ -36,9 +37,13 @@ class PolarVector(object):
 	def draw(self,p):
 		'draw vector in cartesian space starting from point p'
 		return '! point '+str(p)+', vector r:'+str(self.r)+' a:'+str(self.a) # output a comment
-	def move(self,p):
+	def move(self,p): #implies that move moves point, should be in point
 		'point + vector -> point'
 		return p+Point(self.r*cos(radians(self.a)),self.r*sin(radians(self.a)))
+	def reflect(self,a):
+		'reflect vector across angle'
+		self.a=2*a-self.a
+		return self # todo: doctest
 
 class Edge(PolarVector):
 	def draw(self,p):
@@ -53,8 +58,11 @@ class Notch(PolarVector):
 		self.c=c # central angle of notch
 	def __str__(self):
 		return super().__str__()+' c:'+str(self.c)
-	# todo: notch evaluates to two Edges when drawing
-
+	def draw(self,p):
+		'draw notch in cartesian space, evaluates to two Edges'
+		e1=Edge(self.r,self.a+90-self.c/2.)
+		e2=Edge(self.r,self.a-90-self.c/2.)
+		return e1.draw(p)+'\n'+e2.draw(e1.move(p)) # todo: doctest
 
 class SmoothNotch(Notch):
 	'notch with smooth transition'
@@ -62,7 +70,7 @@ class SmoothNotch(Notch):
 		super().__init__(r,a,c)
 		self.s=s # smooth blending >0, <=1
 	def __str__(self):
-		return super().__str__()+' s:'+str(self.s)
+		return super().__str__()+' s:'+str(self.s) 
 	# todo: SmoothNotch evaluates to two QuadraticBeziers when drawing
 
 # ---- end library ----
@@ -81,7 +89,7 @@ def main():
 	for i in range(7):
 		r=16-i # length [16,15,...,10]
 		a=i*5 # angle [0,5,...,30]
-	edgeVec.append(Edge(r,a))
+		edgeVec.append(Edge(r,a))
 
 	# choose a notch wall length: [8] nw
 	# choose a notch angle: [8°] na (greater or equal to segment incidence angle ia)
@@ -95,10 +103,23 @@ def main():
 	for i in range(7):
 		r=8*(1-i*.05) # % of length 8 [100,95,...,70]
 		a=8+i*11 # angle [8,19,...,74]
-	notchVec.append(Notch(r,a,8))
+		notchVec.append(Notch(r,a,8))
+
+	# interleave edges and notches
+	vecs=list(sum(zip(edgeVec,notchVec),())) # or we could have coded the above two as one loop
 
 	# choose a tip width, tw, probably less than last segment length: [8]
+	vecs.append(Edge(8,270)) # tip: length 8, pointing down
 
+	# use a reflection of the LE tip notch for the TE tip notch
+	vecs.append(deepcopy(vecs[-2]).reflect(0))
+
+	for i in vecs:
+		print(i)
+
+	#for i in vecs:
+	#	print(i.draw)
+	# next todo: update the p which is passed in when drawing
 
 if __name__ == "__main__":
 	main()
