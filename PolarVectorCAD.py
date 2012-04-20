@@ -44,10 +44,10 @@ class PolarVector(object):
 	def move(self,p):
 		'point + vector -> point'
 		return p.move(self.r*cos(radians(self.a)),self.r*sin(radians(self.a)))
-	def reflect(self,a):
-		'reflect vector across angle'
+	def mirror(self,a):
+		'mirror vector across angle'
 		self.a=2*a-self.a
-		return self # todo: fix and doctest
+		return self # todo: doctest
 
 class Edge(PolarVector):
 	def draw(self,p):
@@ -64,9 +64,8 @@ class Notch(PolarVector):
 		return super().__str__()+' c:'+str(self.c)
 	def draw(self,p):
 		'draw notch in cartesian space, evaluates to two Edges'
-		e1=Edge(self.r,self.a+90-self.c/2.)
-		e2=Edge(self.r,self.a-90+self.c/2.)
-		return e1.draw(p)+'\n'+e2.draw(p) # todo: doctest
+		return Edge(self.r,self.a+90-self.c/2.).draw(p)+'\n'+ \
+		       Edge(self.r,self.a-90+self.c/2.).draw(p) # todo: doctest & equavalent move test
 
 class SmoothNotch(Notch):
 	'notch with smooth transition'
@@ -116,7 +115,7 @@ def main():
 	vecs.append(Edge(8,90)) # tip: length 8, pointing down
 
 	# use a reflection of the LE tip notch for the TE tip notch
-	vecs.append(deepcopy(vecs[-2]).reflect(0))
+	vecs.append(deepcopy(vecs[-2]).mirror(90))
 
 	for i in vecs:
 		print(i)
