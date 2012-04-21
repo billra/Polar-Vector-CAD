@@ -4,7 +4,6 @@
 # version 2.0
 
 from math import sin, cos, radians
-from copy import deepcopy
 
 # ---- Cartesian Space ----
 

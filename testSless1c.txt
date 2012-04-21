@@ -1,6 +1,7 @@
 regression test for sless 1c reference design
 
 	>>> from PolarVectorCAD import *
+	>>> from copy import deepcopy
 
 14 LE bridle points, 2 TE bridle points (in same bridle) -> 13 LE segments: 1 center, 6 per side
 stack 7 segments (array command)
