@@ -11,51 +11,16 @@ Point Class
 	>>> p=Point(1,2)
 	>>> print(p)
 	1,2
-	>>> q=Point(3,4)
-	>>> print(p+q)
-	4,6
 	>>> r=Point(3.3,4.4)
-	>>> print(p+r)
-	4.3,6.4
+	>>> print(r)
+	3.3,4.4
 	>>> v=Point(1,2,3)
 	>>> print(v)
 	1,2,3
-	>>> w=Point(4,5,6)
-	>>> print(w)
-	4,5,6
-	>>> print(v+w)
-	5,7,9
-
-PolarVector Class
-
-	>>> v=PolarVector(5,6)
-	>>> print(v)
-	r:5 a:6
-	>>> p=Point(1,2)
-	>>> v.draw(p)
-	'! point 1,2, vector r:5 a:6'
-	>>> p2=v.move(p)
-	>>> print(p2) # doctest:+ELLIPSIS
-	5.97260947684...,2.5226423163...
-
-Edge Class
-
-	>>> e=Edge(1,2)
-	>>> p=Point(3,4)
-	>>> e.draw(p) # doctest:+ELLIPSIS
-	'_line 3,4 3.9993908270...,4.0348994967...'
-
-Notch Class
-
-	>>> n=Notch(1,2,3)
-	>>> print(n)
-	r:1 a:2 c:3
-
-SmoothNotch Class
-
-	>>> s=SmoothNotch(1,2,3,4)
-	>>> print(s)
-	r:1 a:2 c:3 s:4
+	>>> print(p.move(3,4))
+	4,6
+	>>> print(p)
+	4,6
 
 Bezier Class
 
@@ -66,10 +31,59 @@ Bezier Class
 	>>> b.draw()
 	'_curve 1,2 3,4 5,6 _enter'
 
-Regression tests: add tests here to ensure future updates maintain compatibility with existing usage.
+PolarVector Class
 
-sless 1c
+	>>> d=PolarVector(1,2)
+	>>> e=Point(3,4)
+	>>> f=d.move(e)
+	>>> print(f) # doctest:+ELLIPSIS
+	3.9993908...,4.0348994...
+	>>> print(e) # doctest:+ELLIPSIS
+	3.9993908...,4.0348994...
+	>>> f is e
+	True
+	>>> s=PolarVector(99,45)
+	>>> t=s.mirror(0)
+	>>> t is s
+	True
+	>>> print(s)
+	r:99 a:-45
+	>>> print(s.mirror(45))
+	r:99 a:135
+	>>> v=PolarVector(5,6)
+	>>> print(v)
+	r:5 a:6
+	>>> p=Point(1,2)
+	>>> v.draw(p) # doctest:+ELLIPSIS
+	'! start(1,2), vector r:5 a:6, end(5.9726094...,2.5226423...)'
+	>>> print(p) # doctest:+ELLIPSIS
+	5.9726094...,2.5226423...
 
-	todo
+Edge Class
 
+	>>> e=Edge(1,2)
+	>>> p=Point(3,4)
+	>>> e.draw(p) # doctest:+ELLIPSIS
+	'_line 3,4 3.9993908270...,4.0348994967...'
+	>>> print(p) # doctest:+ELLIPSIS
+	3.9993908270...,4.0348994967...
 
+Notch Class
+
+	>>> n=Notch(1,2,3)
+	>>> print(n)
+	r:1 a:2 c:3
+	>>> p=Point(22,44)
+	>>> print(n.draw(p)) # doctest:+ELLIPSIS
+	_line 22,44 21.9912734...,44.9999619...
+	_line 21.9912734...,44.9999619... 22.0523220...,44.0018271...
+	>>> print(p) # doctest:+ELLIPSIS
+	22.0523220...,44.0018271...
+
+SmoothNotch Class
+
+	>>> s=SmoothNotch(1,2,3,4)
+	>>> print(s)
+	r:1 a:2 c:3 s:4
+
+end of main tests.

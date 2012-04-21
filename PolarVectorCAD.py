@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Polar Vector CAD library, Bill Ola Rasmussen
+# Polar Vector CAD library
+# Bill Ola Rasmussen
+# version 2.0
 
 from math import sin, cos, radians
 from copy import deepcopy
@@ -12,16 +14,13 @@ class Point(object):
 		self.f=f
 	def __str__(self):
 		return ','.join(map(str,self.f))
-	def __add__(self,rhs):
-		return Point( *map(sum,zip(self.f,rhs.f)) ) # todo: delete
 	def move(self,*m):
 		'move a point by a list of numbers'
 		self.f=[x+y for x,y in zip(self.f,m)] # todo doctest
 		return self
-	# todo: draw function
 
 class Bezier(object):
-	'Points defining a Bezier curve (start point, 1-n control points, end point)'
+	'Points defining a Bezier curve (start Point, 1-n control Points, end Point)'
 	def __init__(self,*p):
 		self.p=p
 	def __str__(self):
@@ -38,16 +37,16 @@ class PolarVector(object):
 		self.a=a # angle (in degrees)
 	def __str__(self):
 		return 'r:'+str(self.r)+' a:'+str(self.a)
-	def draw(self,p):
-		'draw vector in cartesian space starting from point p'
-		return '! point '+str(p)+', vector r:'+str(self.r)+' a:'+str(self.a) # output a comment
 	def move(self,p):
 		'point + vector -> point'
 		return p.move(self.r*cos(radians(self.a)),self.r*sin(radians(self.a)))
 	def mirror(self,a):
 		'mirror vector across angle'
 		self.a=2*a-self.a
-		return self # todo: doctest
+		return self
+	def draw(self,p):
+		'base PolarVector "draws" a comment and updates Point location'
+		return '! start('+str(p)+'), vector '+str(self)+', end('+str(self.move(p))+')'
 
 class Edge(PolarVector):
 	def draw(self,p):
@@ -65,7 +64,7 @@ class Notch(PolarVector):
 	def draw(self,p):
 		'draw notch in cartesian space, evaluates to two Edges'
 		return Edge(self.r,self.a+90-self.c/2.).draw(p)+'\n'+ \
-		       Edge(self.r,self.a-90+self.c/2.).draw(p) # todo: doctest & equavalent move test
+		       Edge(self.r,self.a-90+self.c/2.).draw(p)
 
 class SmoothNotch(Notch):
 	'notch with smooth transition'
@@ -76,14 +75,7 @@ class SmoothNotch(Notch):
 		return super().__str__()+' s:'+str(self.s) 
 	# todo: SmoothNotch evaluates to two QuadraticBeziers when drawing
 
-# ---- end library ----
-
-def main():
-	pass
-
-
 if __name__ == "__main__":
-	main()
 	import doctest
 	doctest.testfile('tests.txt')
 	doctest.testfile('testSless1c.txt')
