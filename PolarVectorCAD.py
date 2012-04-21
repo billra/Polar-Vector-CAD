@@ -16,7 +16,7 @@ class Point(object):
 		return ','.join(map(str,self.f))
 	def move(self,*m):
 		'move a point by a list of numbers'
-		self.f=[x+y for x,y in zip(self.f,m)] # todo doctest
+		self.f=[x+y for x,y in zip(self.f,m)]
 		return self
 
 class Bezier(object):
