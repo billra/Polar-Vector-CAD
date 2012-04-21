@@ -79,54 +79,13 @@ class SmoothNotch(Notch):
 # ---- end library ----
 
 def main():
+	pass
 
-	# sless 1c reference design
-
-	# 14 LE bridle points, 2 TE bridle points (in same bridle) -> 13 LE segments: 1 center, 6 per side
-	# stack 7 segments (array command)
-	# clip off at an angle to create shorter segments toward tips, length range: [16-10] lr
-	# choose a segment incidence angle to create LE curve: [5°] ia
-	# rotate segments into their final angle: grab 6, rotate by ia, grab 5 rotate, etc.
-
-	edgeVec=[]
-	for i in range(7):
-		r=16-i # length [16,15,...,10]
-		a=i*5 # angle [0,5,...,30]
-		edgeVec.append(Edge(r,a))
-
-	# choose a notch wall length: [8] nw
-	# choose a notch angle: [8°] na (greater or equal to segment incidence angle ia)
-	# make 7 notches total (array command) 
-	# scale notches so smaller toward end, range: [100%-70%] -> 100, 95, 90, 85, 80, 75, 70% sn
-	# choose mid and tip notch rotation angle: [8°,74°] sr, er 
-	#   (should follow tension vector from bridle point, see wrinkle in canopy)
-	# (74-8)/6=11 nr, so rotate each notch 11° using the same segment grab and rotate strategy
-
-	notchVec=[]
-	for i in range(7):
-		r=8*(1-i*.05) # % of length 8 [100,95,...,70]
-		a=8+i*11 # angle [8,19,...,74]
-		notchVec.append(Notch(r,a,8))
-
-	# interleave edges and notches
-	vecs=list(sum(zip(edgeVec,notchVec),())) # or we could have coded the above two as one loop
-
-	# choose a tip width, tw, probably less than last segment length: [8]
-	vecs.append(Edge(8,90)) # tip: length 8, pointing down
-
-	# use a reflection of the LE tip notch for the TE tip notch
-	vecs.append(deepcopy(vecs[-2]).mirror(90))
-
-	for i in vecs:
-		print(i)
-
-	p=Point(0,0)
-	for i in vecs:
-		print(i.draw(p))
 
 if __name__ == "__main__":
 	main()
 	import doctest
 	doctest.testfile('tests.txt')
+	doctest.testfile('testSless1c.txt')
 
 
